@@ -1,0 +1,23 @@
+Package: gridplot
+Maintainer: baptiste Auguie <baptiste.auguie@gmail.com>
+License: GPL (>=2)
+Title: Misc plots in grid graphics
+Type: Package
+LazyLoad: yes
+Author: baptiste Auguie
+Description: Specialised plots implemented in Grid
+Version: 0.3
+BuildVignettes: true
+Date: 2011-08-23
+Depends:
+    grid,
+    scales,
+    RColorBrewer
+Suggests:
+    gridExtra,
+    dichromat,
+    png
+Collate:
+    'matrixGrob.r'
+    'row_layout.r'
+    'tmatrix.r'
