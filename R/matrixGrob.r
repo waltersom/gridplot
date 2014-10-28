@@ -131,7 +131,7 @@ colorbarGrob <- function(d, x = unit(0.5, "npc"),
                          height=unit(0.8,"npc"),
                          width=unit(0.5, "cm"), size=0.7,
                          margin=unit(1,"mm"), tick.length=0.2*width,
-                         pretty.breaks = grid.pretty(range(d)),
+                         pretty.breaks = grid.pretty(range(d, na.rm=TRUE)),
                          digits = 2, show.extrema=TRUE,
                          palette = diverging_palette(d), n = 1e2,
                          point.negative=TRUE,   gap =5,
@@ -176,7 +176,7 @@ colorbarGrob <- function(d, x = unit(0.5, "npc"),
                         gp=gpar())
   
   ## position of the dots
-  if(any( d < 0 )){
+  if(any( d < 0 , na.rm=TRUE)){
   yneg <- diff(range(c(0, d[d<0]), na.rm=TRUE))/diff(range(d, na.rm=TRUE))  * height
   clipvp <- viewport(clip=TRUE, x=x, y=y, width=width, height=yneg,
                      just=c("left", "bottom"))
@@ -185,7 +185,7 @@ colorbarGrob <- function(d, x = unit(0.5, "npc"),
   pos <- seq(0, to=h, by=gap)
   }
   ## coloured dots
-  cg <- if(!point.negative || !any( d < 0 )) nullGrob() else
+  cg <- if(!point.negative || !any( d < 0 , na.rm=TRUE)) nullGrob() else
   pointsGrob(x=unit(rep(0.5, length(pos)), "npc"), y = y + unit(pos, "mm") ,
           pch=21, gp=gpar(col="white", fill="black"),size=unit(size*gap, "mm"), vp=clipvp)
     
