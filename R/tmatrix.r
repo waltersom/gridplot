@@ -144,7 +144,7 @@ tmatrixGrob <- function(t11, t12, t21, t22,
 
    
   combined <- do.call(c, list(t11, t12, t21, t22))
-  range <- range(combined)
+  range <- range(combined, na.rm=TRUE)
   
   pal <- palette #(range, colors = colors, center=center)
   

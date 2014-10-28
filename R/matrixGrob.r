@@ -46,7 +46,7 @@ function (nrow, ncol, cols, byrow = TRUE, name = NULL, gp = NULL,
 gradient_palette <- function(d = NULL, low="white", high="black", ...){
   
   function(x){
-    scales::seq_gradient_pal(low, high)((x - min(d))/diff(range(d)) * 1 + 0)
+    scales::seq_gradient_pal(low, high)((x - min(d, na.rm=TRUE))/diff(range(d, na.rm=TRUE)) * 1 + 0)
     }
   
 }
@@ -73,15 +73,15 @@ diverging_palette <- function(d = NULL, centered = FALSE, midpoint = 0,
 
   if(!length(colors)%%2)
     stop("requires odd number of colors")
-  if( !centered && !(midpoint <=  max(d) && midpoint >= min(d)))
+  if( !centered && !(midpoint <=  max(d, na.rm=TRUE) && midpoint >= min(d, na.rm=TRUE)))
     warning("Midpoint is outside the data range!")
   
   values <-  if(!centered) {
-    low <- seq(min(d), midpoint, length=half)
-    high <- seq(midpoint, max(d), length=half)
+    low <- seq(min(d, na.rm=TRUE), midpoint, length=half)
+    high <- seq(midpoint, max(d, na.rm=TRUE), length=half)
     c(low[-length(low)], midpoint, high[-1])
   } else {
-    mabs <- max(abs(d - midpoint))
+    mabs <- max(abs(d - midpoint), na.rm=TRUE)
     seq(midpoint-mabs, midpoint + mabs, length=length(colors))
   }
   
@@ -139,13 +139,13 @@ colorbarGrob <- function(d, x = unit(0.5, "npc"),
                          ...){
 
   ## includes extreme limits of the data
-  legend.vals <- unique(round(sort(c(pretty.breaks, min(d), max(d))), digits)) 
+  legend.vals <- unique(round(sort(c(pretty.breaks, min(d, na.rm=TRUE), max(d, na.rm=TRUE))), digits)) 
 
   legend.labs <- if(show.extrema)
     legend.vals else unique(round(sort(pretty.breaks), digits)) 
 
   ## interpolate the colors
-  colors <- palette(seq(min(d), max(d), length=n))
+  colors <- palette(seq(min(d, na.rm=TRUE), max(d, na.rm=TRUE), length=n))
   ## 1D strip of colors, from bottom <-> min(d) to top <-> max(d)
   lg <- rasterGrob(rev(colors), # rasterGrob draws from top to bottom
                    y=y, interpolate=interpolate,
@@ -177,7 +177,7 @@ colorbarGrob <- function(d, x = unit(0.5, "npc"),
   
   ## position of the dots
   if(any( d < 0 )){
-  yneg <- diff(range(c(0, d[d<0])))/diff(range(d))  * height
+  yneg <- diff(range(c(0, d[d<0]), na.rm=TRUE))/diff(range(d, na.rm=TRUE))  * height
   clipvp <- viewport(clip=TRUE, x=x, y=y, width=width, height=yneg,
                      just=c("left", "bottom"))
   h <- convertUnit(yneg, "mm", "y", valueOnly=TRUE)
