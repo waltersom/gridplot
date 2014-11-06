@@ -89,7 +89,7 @@ row_layout <- function(...,
   
     
   combined <- do.call(c, matrices)
-  range <- range(combined)
+  range <- range(combined, na.rm=TRUE)
   
   pal <- palette(range, colors = colors, center=center)
 
