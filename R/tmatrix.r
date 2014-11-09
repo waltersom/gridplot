@@ -84,6 +84,7 @@ grid.stext <- function(...){
 ##' @param point.negative see single_panel
 ##' @param debug logical, show layout
 ##' @param show.names logical, add block names
+##' @param color.NA color NA entries should be filled
 ##' @param ... passed to gTree
 ##' @family matrix user_level
 ##' @return gTree
@@ -121,7 +122,7 @@ tmatrixGrob <- function(t11, t12, t21, t22,
                         gp.frame=gpar(fill="transparent"),
                         gp.names= gpar(cex=5),
                         point.negative=TRUE,
-                        debug=FALSE, show.names=TRUE, ...){
+                        debug=FALSE, show.names=TRUE, color.NA=NA, ...){
   
   nrtop <- nrow(t11)
   nrbot <- nrow(t22)
@@ -152,24 +153,24 @@ tmatrixGrob <- function(t11, t12, t21, t22,
                       palette = pal, at.y = at.y[[1]], at.x=at.x[[1]], width=widthleft,
                       labels.x=labels.x[[1]], labels.y=labels.y[[1]], margin=margin,
                       xaxis=xaxis, yaxis=yaxis, title.y=title.y, title.x=title.x,
-                      frame.gp = gpar(fill="transparent", col="grey50", lwd=0.5))
+                      frame.gp = gpar(fill="transparent", col="grey50", lwd=0.5), color.NA=color.NA)
                
   g12 <- single_panel(t12, point.negative=point.negative,
                       palette = pal, at.y = at.y[[1]], at.x=at.x[[2]], width=widthright,
                       labels.x=labels.x[[2]], labels.y=NULL, margin=margin,
                       xaxis=xaxis, yaxis=FALSE, title.y=NULL, title.x=title.x,
-                      frame.gp = gpar(fill="transparent", col="grey50", lwd=0.5))
+                      frame.gp = gpar(fill="transparent", col="grey50", lwd=0.5), color.NA=color.NA)
   g21 <- single_panel(t21, point.negative=point.negative,
                       palette = pal, at.y = at.y[[2]], at.x=at.x[[1]],
                       width=widthleft,
                       labels.x=NULL, labels.y=labels.y[[2]], margin=margin,
                       xaxis=FALSE, yaxis=yaxis, title.y=title.y, title.x=NULL,
-                      frame.gp = gpar(fill="transparent", col="grey50", lwd=0.5))
+                      frame.gp = gpar(fill="transparent", col="grey50", lwd=0.5), color.NA=color.NA)
   g22 <- single_panel(t22, point.negative=point.negative,
                       palette = pal, at.y = at.y[[2]], at.x=at.x[[2]], width=widthright,
                       labels.x=NULL, labels.y=NULL, margin=margin,
                       xaxis=FALSE, yaxis=FALSE, title.y=NULL, title.x=NULL,
-                      frame.gp = gpar(fill="transparent", col="grey50", lwd=0.5))
+                      frame.gp = gpar(fill="transparent", col="grey50", lwd=0.5), color.NA=color.NA)
   
   legend <- if(!legend) nullGrob() else
   do.call(colorbarGrob,

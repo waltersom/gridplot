@@ -24,6 +24,7 @@
 ##' @param title.y see single_panel
 ##' @param point.negative see single_panel
 ##' @param debug logical, display grid layout
+##' @param color.NA color NA entries should be filled
 ##' @return layout
 ##' @family matrix user_level
 ##' @author Baptiste Auguie
@@ -67,7 +68,7 @@ row_layout <- function(...,
                        title.x = expression(italic(k)),
                        title.y = expression(italic(n)),
                        point.negative=TRUE,
-                       debug=FALSE){
+                       debug=FALSE, color.NA=NA){
   
   matrices <- list(...)
   
@@ -103,7 +104,7 @@ row_layout <- function(...,
                              labels.x=labels.x,labels.y=labels.y, margin=margin,
                              show.xlab = show.xlab, show.ylab=show.ylab,
                              xaxis=xaxis, yaxis=yaxis, title.y=title.y, title.x=title.x,
-                             frame.gp = gpar(fill="transparent", col="grey50", lwd=0.5))
+                             frame.gp = gpar(fill="transparent", col="grey50", lwd=0.5), color.NA=color.NA)
   ## remaining matrices, if any
   for(ii in seq.int(from=2, to = n, length.out = n-1)){
     grobs[[ii]] <- single_panel(matrices[[ii]],
@@ -112,7 +113,7 @@ row_layout <- function(...,
                                 labels.x=labels.x,labels.y=NULL,
                                 show.xlab = show.xlab, show.ylab=show.ylab,
                                 xaxis=xaxis, yaxis=TRUE, title.y=NULL, margin=margin,
-                                frame.gp = gpar(fill="transparent", col="grey50", lwd=0.5))
+                                frame.gp = gpar(fill="transparent", col="grey50", lwd=0.5), color.NA=color.NA)
 
     }
   grobs[[n+1]] <- do.call(colorbarGrob,

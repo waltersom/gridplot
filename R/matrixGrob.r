@@ -216,6 +216,7 @@ widthDetails.colorbar <- function(x){
 ##' @param point.negative logical, add points to negative values
 ##' @param palette palette
 ##' @param frame.gp gpar for the frame
+##' @param color.NA color NA entries should be filled
 ##' @param ... passed to gTree
 ##' @return gTree 
 ##' @author baptiste Auguie
@@ -231,7 +232,7 @@ widthDetails.colorbar <- function(x){
 dmatrixGrob <- function(d, 
                         point.negative=FALSE, size=0.7,
                         palette = diverging_palette(d, center=FALSE),
-                        frame.gp = gpar(fill="transparent", col="grey50"), use.raster=FALSE, ...){
+                        frame.gp = gpar(fill="transparent", col="grey50"), use.raster=FALSE, color.NA=NA, ...){
 
   nc <- ncol(d)
   nr <- nrow(d)
@@ -239,6 +240,7 @@ dmatrixGrob <- function(d,
   ## define the fill matrix for squares
   ## and color matrix for dots
   fill.matrix <- palette(d)
+  fill.matrix[is.na(fill.matrix)] <- color.NA
   dim(fill.matrix) <- dim(d)
  
   if(use.raster){
@@ -410,6 +412,7 @@ grid.rowaxis <- function(...){
 ##' @param title.x x title
 ##' @param title.y y title
 ##' @param point.negative logical
+##' @param color.NA color NA entries should be filled
 ##' @param ... passed to gTree
 ##' @return gTree, with border.width and border.height
 ##' @family matrix user_level
@@ -426,7 +429,7 @@ single_panel <- function(d, width=unit(5, "cm") ,
                          show.xlab=TRUE, show.ylab=TRUE,
                          title.x = expression(italic(k)),
                          title.y = expression(italic(n)),
-                         point.negative=TRUE, ...){
+                         point.negative=TRUE, color.NA=NA, ...){
 
   nr <- nrow(d)
   nc <- ncol(d)
@@ -438,7 +441,7 @@ single_panel <- function(d, width=unit(5, "cm") ,
   ## grobs
   gm <- dmatrixGrob(d, point.negative=point.negative,
                     palette = palette,
-                    frame.gp = gpar(fill="transparent", col="grey50", lwd=0.5))
+                    frame.gp = gpar(fill="transparent", col="grey50", lwd=0.5), color.NA=color.NA)
     
   yaxis <- if(!yaxis) nullGrob() else
   rowaxisGrob(unit(1, "npc"), rev(xy$y)[at.y]*unit(1, "npc"),
